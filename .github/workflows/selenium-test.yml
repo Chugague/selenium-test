@@ -9,38 +9,49 @@ on:
 jobs:
   run-functional-test:
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: ⬇️ Checkout repo
       uses: actions/checkout@v3
-
+    
     - name: 🐍 Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-
+    
     - name: 📦 Set up virtual environment and install requirements
       run: |
         python -m venv venv
         source venv/bin/activate
         pip install --upgrade pip
         pip install -r requirements.txt
-
+    
     - name: 🧩 Install Chrome 114
       run: |
         wget https://storage.googleapis.com/chrome-for-testing-public/114.0.5735.90/linux64/chrome-linux64.zip
         unzip chrome-linux64.zip
         sudo mv chrome-linux64 /opt/chrome114
         sudo ln -sf /opt/chrome114/chrome /usr/bin/google-chrome
-
+    
     - name: 🧩 Install ChromeDriver 114.0.5735.90
       run: |
         wget https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip
         chmod +x chromedriver
         sudo mv chromedriver /usr/local/bin/
-
+    
     - name: 🚀 Run Selenium CI test
       run: |
         source venv/bin/activate
         python test_busqueda_ci.py
+    
+    # Subir archivos de debug si el test falla
+    - name: 📤 Upload debug files on failure
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: debug-files
+        path: |
+          failure.png
+          page_source.html
+        retention-days: 7
