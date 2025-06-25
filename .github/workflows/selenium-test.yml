@@ -31,7 +31,7 @@ jobs:
         wget https://storage.googleapis.com/chrome-for-testing-public/114.0.5735.90/linux64/chrome-linux64.zip
         unzip chrome-linux64.zip
         sudo mv chrome-linux64 /opt/chrome114
-        sudo ln -s /opt/chrome114/chrome /usr/bin/google-chrome
+        sudo ln -sf /opt/chrome114/chrome /usr/bin/google-chrome
 
     - name: 🧩 Install ChromeDriver 114.0.5735.90
       run: |
