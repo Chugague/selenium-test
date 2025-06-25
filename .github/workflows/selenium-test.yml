@@ -19,7 +19,7 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: 🧪 Set up virtual environment and install requirements
+    - name: 📦 Set up virtual environment and install requirements
       run: |
         python -m venv venv
         source venv/bin/activate
