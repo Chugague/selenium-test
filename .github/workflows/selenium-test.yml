@@ -1,4 +1,4 @@
-name: Selenium Functional Test (CI)
+name: Selenium Functional Test (Chrome 114)
 
 on:
   push:
@@ -19,25 +19,24 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: 🧪 Create virtual environment and install dependencies
+    - name: 📦 Set up virtual environment and install requirements
       run: |
         python -m venv venv
         source venv/bin/activate
         pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: 🧩 Install Google Chrome
+    - name: 🧩 Install Chrome 114
       run: |
-        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        sudo apt install -y ./google-chrome-stable_current_amd64.deb
+        wget https://storage.googleapis.com/chrome-for-testing-public/114.0.5735.90/linux64/chrome-linux64.zip
+        unzip chrome-linux64.zip
+        sudo mv chrome-linux64 /opt/chrome114
+        sudo ln -s /opt/chrome114/chrome /usr/bin/google-chrome
 
-    - name: 🧩 Install ChromeDriver compatible with installed Chrome
+    - name: 🧩 Install ChromeDriver 114.0.5735.90
       run: |
-        CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
-        echo "Using Chrome version: $CHROME_VERSION"
-        DRIVER_URL="https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION/linux64/chromedriver-linux64.zip"
-        wget -O chromedriver.zip "$DRIVER_URL"
-        unzip chromedriver.zip
+        wget https://storage.googleapis.com/chrome-for-testing-public/114.0.5735.90/linux64/chromedriver-linux64.zip
+        unzip chromedriver-linux64.zip
         chmod +x chromedriver-linux64/chromedriver
         sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
 
