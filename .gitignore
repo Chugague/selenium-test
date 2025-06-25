@@ -84,3 +84,6 @@ Desktop.ini
 *.iml
 *.sublime-workspace
 *.sublime-project
+
+# chromedriver
+chromedriver.exe
